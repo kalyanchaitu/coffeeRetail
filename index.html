@@ -1,0 +1,987 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f1e8">
+  <meta name="description" content="Shop Cofree coffee beans and coffee powder in 250 g and 500 g bags. Choose whole beans or your preferred grind.">
+  <title>Cofree — Good coffee, better mornings</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #292a23;
+      --muted: #69695f;
+      --cream: #f6f1e8;
+      --paper: #fffdf8;
+      --green: #314b38;
+      --lime: #c6d77b;
+      --line: #e7e1d6;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.5;
+    }
+    button, a { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; }
+    .announcement {
+      padding: 9px 16px;
+      background: var(--green);
+      color: white;
+      text-align: center;
+      font-size: 12px;
+      letter-spacing: .08em;
+    }
+    .announcement strong { color: var(--lime); font-weight: 600; }
+    .site-header {
+      position: sticky;
+      z-index: 5;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 76px;
+      padding: 0 max(5vw, 22px);
+      border-bottom: 1px solid rgba(41, 42, 35, .08);
+      background: rgba(255, 253, 248, .94);
+      backdrop-filter: blur(12px);
+    }
+    .logo {
+      font-family: var(--serif);
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -.07em;
+    }
+    .logo span { color: #788c4d; }
+    .nav-links { display: flex; gap: 34px; color: #56574f; font-size: 14px; }
+    .nav-links a:hover { color: var(--green); }
+    .cart-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 15px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--ink);
+      font-size: 13px;
+    }
+    .cart-count {
+      display: grid;
+      width: 21px;
+      height: 21px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--green);
+      color: white;
+      font-size: 11px;
+    }
+    .hero {
+      display: grid;
+      min-height: min(660px, calc(100vh - 110px));
+      grid-template-columns: 1fr 1fr;
+      background: var(--cream);
+    }
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 80px 8vw 80px 11vw;
+    }
+    .eyebrow {
+      margin: 0 0 20px;
+      color: #627447;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      max-width: 560px;
+      margin-bottom: 20px;
+      font-family: var(--serif);
+      font-size: clamp(52px, 6vw, 84px);
+      font-weight: 400;
+      letter-spacing: -.065em;
+      line-height: .98;
+    }
+    h1 em { color: #667b4c; font-weight: 400; }
+    .hero-copy > p:not(.eyebrow) {
+      max-width: 390px;
+      margin-bottom: 28px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.75;
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 23px;
+      border: 1px solid var(--green);
+      border-radius: 3px;
+      background: var(--green);
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background .2s, color .2s, transform .2s;
+    }
+    .button:hover { transform: translateY(-2px); background: #243a2a; }
+    .hero-note { margin: 18px 0 0; color: #77766d; font-size: 11px; }
+    .hero-image {
+      position: relative;
+      min-height: 460px;
+      overflow: hidden;
+      background: #9c8b70 url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1500&q=85") center 48% / cover;
+    }
+    .hero-image::after {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(28, 30, 21, .03), rgba(28, 30, 21, .14));
+      content: "";
+    }
+    .image-caption {
+      position: absolute;
+      z-index: 1;
+      right: 7%;
+      bottom: 7%;
+      max-width: 230px;
+      padding: 18px 20px;
+      background: var(--paper);
+      font-family: var(--serif);
+      font-size: 17px;
+      line-height: 1.3;
+    }
+    .image-caption small {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .benefits {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      padding: 27px 8vw;
+      border-bottom: 1px solid var(--line);
+      background: var(--paper);
+      text-align: center;
+    }
+    .benefit {
+      padding: 4px 16px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .benefit + .benefit { border-left: 1px solid var(--line); }
+    .benefit strong { color: var(--ink); font-size: 13px; font-weight: 600; }
+    .section { padding: 94px max(6vw, 22px); }
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin: 0 auto 34px;
+      max-width: 1180px;
+    }
+    .section-heading .eyebrow { margin-bottom: 10px; }
+    h2 {
+      margin-bottom: 0;
+      font-family: var(--serif);
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 400;
+      letter-spacing: -.05em;
+      line-height: 1.05;
+    }
+    .text-link {
+      padding-bottom: 5px;
+      border-bottom: 1px solid #8a9873;
+      color: var(--green);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .products {
+      display: grid;
+      max-width: 1180px;
+      margin: auto;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    .product { min-width: 0; }
+    .product-image {
+      position: relative;
+      display: grid;
+      aspect-ratio: 1 / 1.02;
+      overflow: hidden;
+      place-items: center;
+      background: #e9e3d6;
+    }
+    .product-image::before {
+      position: absolute;
+      inset: 0;
+      background-position: center;
+      background-size: cover;
+      content: "";
+      transition: transform .45s;
+    }
+    .product:hover .product-image::before { transform: scale(1.04); }
+    .product-image.one::before { background-image: url("https://images.unsplash.com/photo-1559525839-b184a4d698c7?auto=format&fit=crop&w=900&q=80"); }
+    .product-image.two::before { background-image: url("https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=900&q=80"); }
+    .product-image.three::before { background-image: url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80"); }
+    .tag {
+      position: absolute;
+      z-index: 1;
+      top: 14px;
+      left: 14px;
+      padding: 6px 9px;
+      background: var(--paper);
+      color: var(--green);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .product-info { padding: 16px 2px 0; }
+    .product-topline { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+    .product h3 { margin-bottom: 5px; font-family: var(--serif); font-size: 22px; font-weight: 400; }
+    .price { padding-top: 3px; font-size: 14px; font-weight: 600; white-space: nowrap; }
+    .product-description { margin-bottom: 12px; color: var(--muted); font-size: 12px; }
+    .product-options { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 13px; }
+    .product-options label { color: var(--muted); font-size: 10px; }
+    .product-options label[hidden] { display: none; }
+    .product-grind-option { grid-column: 1 / -1; }
+    .product-options select {
+      display: block;
+      width: 100%;
+      margin-top: 4px;
+      padding: 8px 7px;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: inherit;
+      font-size: 11px;
+    }
+    .price-status {
+      max-width: 1180px;
+      margin: 0 auto 18px;
+      color: #805234;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .price-status[hidden] { display: none; }
+    .add-button {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid #c9c7bc;
+      background: transparent;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 600;
+      transition: background .2s, color .2s, border-color .2s;
+    }
+    .add-button:hover { border-color: var(--green); background: var(--green); color: white; }
+    .story {
+      display: grid;
+      min-height: 440px;
+      grid-template-columns: 1fr 1fr;
+      background: #e9eee2;
+    }
+    .story-image {
+      min-height: 400px;
+      background: #78846a url("https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=1400&q=85") center / cover;
+    }
+    .story-copy {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 70px 10vw 70px 8vw;
+    }
+    .story-copy h2 { max-width: 480px; margin-bottom: 18px; }
+    .story-copy p:not(.eyebrow) { max-width: 430px; margin-bottom: 25px; color: #60685b; font-size: 14px; line-height: 1.8; }
+    .quote {
+      padding: 76px 24px;
+      background: var(--green);
+      color: white;
+      text-align: center;
+    }
+    .quote blockquote {
+      max-width: 760px;
+      margin: 0 auto 18px;
+      font-family: var(--serif);
+      font-size: clamp(25px, 3.5vw, 40px);
+      letter-spacing: -.035em;
+      line-height: 1.2;
+    }
+    .quote p { margin: 0; color: #d4dfc8; font-size: 11px; letter-spacing: .13em; text-transform: uppercase; }
+    .newsletter { padding: 74px 24px; background: var(--cream); text-align: center; }
+    .newsletter h2 { margin-bottom: 12px; }
+    .newsletter > p:not(.eyebrow) { margin-bottom: 24px; color: var(--muted); font-size: 13px; }
+    .signup { display: flex; max-width: 440px; margin: auto; }
+    .signup input {
+      min-width: 0;
+      flex: 1;
+      padding: 13px 14px;
+      border: 1px solid #d5d0c4;
+      border-right: 0;
+      border-radius: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: inherit;
+      font-size: 13px;
+    }
+    .signup button { border-radius: 0; }
+    .signup-message { min-height: 20px; margin: 10px 0 0; color: var(--green); font-size: 12px; }
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 27px max(6vw, 22px);
+      color: #6d6c63;
+      font-size: 11px;
+    }
+    footer .logo { color: var(--ink); font-size: 24px; }
+    .toast {
+      position: fixed;
+      z-index: 10;
+      right: 22px;
+      bottom: 22px;
+      padding: 13px 18px;
+      transform: translateY(15px);
+      border-radius: 3px;
+      background: var(--green);
+      color: white;
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s, transform .2s;
+    }
+    .toast.visible { transform: translateY(0); opacity: 1; }
+    .cart-dialog {
+      width: min(560px, calc(100vw - 28px));
+      max-width: none;
+      max-height: min(90vh, 820px);
+      padding: 0;
+      overflow: auto;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+      box-shadow: 0 18px 60px rgba(24, 30, 22, .2);
+    }
+    .cart-dialog::backdrop { background: rgba(26, 31, 25, .48); }
+    .cart-content { padding: 26px; }
+    .cart-heading { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
+    .cart-heading h2 { font-size: 34px; }
+    .cart-close {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--ink);
+      font-size: 21px;
+    }
+    .cart-items { margin: 20px 0; border-top: 1px solid var(--line); }
+    .cart-empty { padding: 22px 0; color: var(--muted); font-size: 13px; }
+    .cart-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 9px 16px;
+      padding: 17px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .cart-item-title { margin: 0 0 4px; font-family: var(--serif); font-size: 18px; }
+    .cart-item-detail { margin: 0; color: var(--muted); font-size: 11px; }
+    .cart-item-price { font-size: 13px; font-weight: 600; white-space: nowrap; }
+    .cart-item-controls { display: flex; align-items: center; gap: 9px; }
+    .quantity-control {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--line);
+    }
+    .quantity-control button {
+      width: 30px;
+      height: 29px;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+    }
+    .quantity-value { min-width: 24px; text-align: center; font-size: 12px; }
+    .remove-item {
+      padding: 4px;
+      border: 0;
+      background: transparent;
+      color: #765148;
+      font-size: 11px;
+      text-decoration: underline;
+    }
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .checkout-form { display: grid; gap: 11px; margin-top: 20px; }
+    .checkout-form[hidden] { display: none; }
+    .checkout-form label { display: grid; gap: 5px; color: var(--muted); font-size: 11px; }
+    .checkout-form input, .checkout-form textarea {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      background: white;
+      color: var(--ink);
+      font: inherit;
+      font-size: 13px;
+    }
+    .checkout-form textarea { min-height: 72px; resize: vertical; }
+    .checkout-form .button { width: 100%; margin-top: 4px; }
+    .checkout-note, .checkout-message { margin: 0; color: var(--muted); font-size: 11px; }
+    .checkout-message { color: #8a442e; }
+
+    @media (max-width: 760px) {
+      .site-header { min-height: 66px; }
+      .nav-links { gap: 16px; }
+      .nav-links a:nth-child(2) { display: none; }
+      .cart-button { gap: 6px; padding: 8px 10px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-copy { padding: 68px 8vw 55px; }
+      .hero-image { min-height: 360px; }
+      .benefits { padding: 22px 4vw; }
+      .benefit { padding: 3px 8px; font-size: 10px; }
+      .benefit strong { font-size: 11px; }
+      .section { padding-top: 70px; padding-bottom: 70px; }
+      .products { grid-template-columns: repeat(2, 1fr); gap: 28px 14px; }
+      .story { grid-template-columns: 1fr; }
+      .story-image { min-height: 320px; }
+      .story-copy { padding: 58px 8vw; }
+    }
+    @media (max-width: 440px) {
+      .announcement { font-size: 10px; }
+      .logo { font-size: 26px; }
+      .nav-links { gap: 12px; font-size: 12px; }
+      .cart-button { font-size: 0; }
+      .cart-count { font-size: 11px; }
+      h1 { font-size: 55px; }
+      .section-heading { align-items: flex-start; flex-direction: column; }
+      .products { gap: 25px 10px; }
+      .product h3 { font-size: 18px; }
+      .price { font-size: 12px; }
+      .product-description { font-size: 11px; }
+      .product-options { grid-template-columns: 1fr; gap: 6px; }
+      .cart-content { padding: 20px; }
+      footer { align-items: flex-start; flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="announcement">Fresh-roasted coffee <strong>— whole beans or coffee powder</strong></div>
+  <header class="site-header">
+    <a class="logo" href="#" aria-label="Cofree home">co<span>free</span></a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#shop">Shop coffee</a>
+      <a href="#story">Our story</a>
+      <a href="#newsletter">Say hello</a>
+    </nav>
+    <button class="cart-button" type="button" aria-label="Shopping bag, 0 items" aria-haspopup="dialog">
+      Bag <span class="cart-count" aria-live="polite">0</span>
+    </button>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">Good coffee. Good company.</p>
+        <h1 id="hero-title">A better kind of <em>daily grind.</em></h1>
+        <p>Shop freshly roasted coffee beans or coffee powder, ground to suit your brew. Pick your bag size, add it to your order, and send it straight to Cofree on WhatsApp.</p>
+        <a class="button" href="#shop">Find your coffee <span aria-hidden="true">&nbsp;→</span></a>
+        <p class="hero-note">Whole beans · Coffee powder · 250 g and 500 g bags</p>
+      </div>
+      <div class="hero-image" role="img" aria-label="Freshly brewed coffee on a cozy morning">
+        <div class="image-caption">Make room for a slower morning.<small>Your new favorite ritual</small></div>
+      </div>
+    </section>
+
+    <section class="benefits" aria-label="Cofree promises">
+      <div class="benefit"><strong>Picked with care</strong><br>Traceable, thoughtful sourcing</div>
+      <div class="benefit"><strong>Roasted fresh</strong><br>In small batches, every week</div>
+      <div class="benefit"><strong>Your choice</strong><br>Whole beans or coffee powder</div>
+    </section>
+
+    <section class="section" id="shop" aria-labelledby="shop-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Choose your coffee type</p>
+          <h2 id="shop-title">Beans or coffee powder.</h2>
+        </div>
+        <a class="text-link" href="#newsletter">Not sure where to start? →</a>
+      </div>
+      <p class="price-status" id="price-status" role="status" aria-live="polite" hidden></p>
+      <div class="products">
+        <article class="product">
+          <div class="product-image one" role="img" aria-label="Cofree Daybreak coffee">
+            <span class="tag">Crowd favorite</span>
+          </div>
+          <div class="product-info">
+            <div class="product-topline"><h3>Daybreak</h3><span class="price">₹399</span></div>
+            <p class="product-description">Caramel · Orange · Honey</p>
+            <div class="product-options">
+              <label>Type
+                <select class="product-format" aria-label="Daybreak coffee type">
+                  <option value="Whole beans">Whole beans</option>
+                  <option value="Coffee powder">Coffee powder</option>
+                </select>
+              </label>
+              <label>Bag size
+                <select class="product-weight" aria-label="Daybreak bag size">
+                  <option value="250 g">250 g</option>
+                  <option value="500 g">500 g</option>
+                </select>
+              </label>
+              <label class="product-grind-option" hidden>Grind
+                <select class="product-grind" aria-label="Daybreak grind">
+                  <option>Filter (medium)</option>
+                  <option>Espresso (fine)</option>
+                  <option>French press (coarse)</option>
+                </select>
+              </label>
+            </div>
+            <button class="add-button" type="button" data-product="Daybreak">Add to bag — ₹399</button>
+          </div>
+        </article>
+        <article class="product">
+          <div class="product-image two" role="img" aria-label="Cofree Slow Sunday coffee">
+            <span class="tag">Easygoing</span>
+          </div>
+          <div class="product-info">
+            <div class="product-topline"><h3>Slow Sunday</h3><span class="price">₹449</span></div>
+            <p class="product-description">Chocolate · Fig · Toasted almond</p>
+            <div class="product-options">
+              <label>Type
+                <select class="product-format" aria-label="Slow Sunday coffee type">
+                  <option value="Whole beans">Whole beans</option>
+                  <option value="Coffee powder">Coffee powder</option>
+                </select>
+              </label>
+              <label>Bag size
+                <select class="product-weight" aria-label="Slow Sunday bag size">
+                  <option value="250 g">250 g</option>
+                  <option value="500 g">500 g</option>
+                </select>
+              </label>
+              <label class="product-grind-option" hidden>Grind
+                <select class="product-grind" aria-label="Slow Sunday grind">
+                  <option>Filter (medium)</option>
+                  <option>Espresso (fine)</option>
+                  <option>French press (coarse)</option>
+                </select>
+              </label>
+            </div>
+            <button class="add-button" type="button" data-product="Slow Sunday">Add to bag — ₹449</button>
+          </div>
+        </article>
+        <article class="product">
+          <div class="product-image three" role="img" aria-label="Cofree Little Wild coffee">
+            <span class="tag">Bright & lively</span>
+          </div>
+          <div class="product-info">
+            <div class="product-topline"><h3>Little Wild</h3><span class="price">₹499</span></div>
+            <p class="product-description">Berries · Citrus · Brown sugar</p>
+            <div class="product-options">
+              <label>Type
+                <select class="product-format" aria-label="Little Wild coffee type">
+                  <option value="Whole beans">Whole beans</option>
+                  <option value="Coffee powder">Coffee powder</option>
+                </select>
+              </label>
+              <label>Bag size
+                <select class="product-weight" aria-label="Little Wild bag size">
+                  <option value="250 g">250 g</option>
+                  <option value="500 g">500 g</option>
+                </select>
+              </label>
+              <label class="product-grind-option" hidden>Grind
+                <select class="product-grind" aria-label="Little Wild grind">
+                  <option>Filter (medium)</option>
+                  <option>Espresso (fine)</option>
+                  <option>French press (coarse)</option>
+                </select>
+              </label>
+            </div>
+            <button class="add-button" type="button" data-product="Little Wild">Add to bag — ₹499</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="story" id="story" aria-labelledby="story-title">
+      <div class="story-image" role="img" aria-label="Coffee being carefully prepared"></div>
+      <div class="story-copy">
+        <p class="eyebrow">A little more intention</p>
+        <h2 id="story-title">Coffee can be simple. And still mean something.</h2>
+        <p>We work with people who care about every step, from the first harvest to your first sip. No fuss, no mystery—just really lovely coffee, made with care.</p>
+        <a class="text-link" href="#newsletter">Get to know Cofree →</a>
+      </div>
+    </section>
+
+    <section class="quote" aria-label="Cofree thought">
+      <blockquote>“The best part of the day doesn't need to be complicated.”</blockquote>
+      <p>Take a moment. Make it a good one.</p>
+    </section>
+
+    <section class="newsletter" id="newsletter" aria-labelledby="newsletter-title">
+      <p class="eyebrow">A good note, every now and then</p>
+      <h2 id="newsletter-title">Let's stay in the loop.</h2>
+      <p>New roasts, little rituals, and 10% off your first order.</p>
+      <form class="signup">
+        <label for="email" class="visually-hidden">Email address</label>
+        <input id="email" name="email" type="email" placeholder="Your email address" autocomplete="email" required>
+        <button class="button" type="submit">Sign me up</button>
+      </form>
+      <p class="signup-message" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer>
+    <a class="logo" href="#" aria-label="Cofree home">co<span>free</span></a>
+    <span>Good coffee, better mornings. © <span id="year"></span> Cofree</span>
+    <span>Made for slow sips and bright starts. <a href="./admin.html">Price admin</a></span>
+  </footer>
+  <dialog class="cart-dialog" aria-labelledby="cart-title">
+    <div class="cart-content">
+      <div class="cart-heading">
+        <div>
+          <p class="eyebrow">Your Cofree order</p>
+          <h2 id="cart-title">Shopping bag</h2>
+        </div>
+        <button class="cart-close" type="button" aria-label="Close shopping bag">×</button>
+      </div>
+      <div class="cart-items" aria-live="polite"></div>
+      <div class="cart-total"><span>Subtotal</span><span id="cart-subtotal">₹0</span></div>
+      <form class="checkout-form">
+        <label>Your name
+          <input name="name" autocomplete="name" required>
+        </label>
+        <label>Your WhatsApp number
+          <input name="phone" type="tel" autocomplete="tel" required>
+        </label>
+        <label>Delivery address
+          <textarea name="address" autocomplete="street-address" required></textarea>
+        </label>
+        <button class="button" type="submit">Send order on WhatsApp</button>
+        <p class="checkout-note">Your order opens as a WhatsApp message for Cofree to confirm. Payment and delivery are arranged directly.</p>
+        <p class="checkout-message" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </dialog>
+  <div class="toast" role="status" aria-live="polite"></div>
+
+  <style>
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./supabase-config.js"></script>
+  <script>
+    // Preview prices are used until the Supabase project is configured.
+    const PRODUCT_PRICES = {
+      "Daybreak": { "250 g": 399, "500 g": 699 },
+      "Slow Sunday": { "250 g": 449, "500 g": 799 },
+      "Little Wild": { "250 g": 499, "500 g": 849 }
+    };
+    const cartCount = document.querySelector(".cart-count");
+    const cartButton = document.querySelector(".cart-button");
+    const toast = document.querySelector(".toast");
+    const cartDialog = document.querySelector(".cart-dialog");
+    const cartItems = document.querySelector(".cart-items");
+    const checkoutForm = document.querySelector(".checkout-form");
+    const checkoutMessage = document.querySelector(".checkout-message");
+    const priceStatus = document.querySelector("#price-status");
+    const cart = new Map();
+    const WHATSAPP_NUMBER = "";
+    let toastTimer;
+
+    const money = (amount) => new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0
+    }).format(amount);
+
+    async function loadLivePrices() {
+      const config = window.COFREE_SUPABASE_CONFIG;
+      const isConfigured = config
+        && /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(config.projectUrl)
+        && typeof config.publishableKey === "string"
+        && config.publishableKey.length > 20
+        && !config.publishableKey.includes("YOUR_");
+
+      if (!isConfigured) {
+        priceStatus.hidden = false;
+        priceStatus.textContent = "Preview prices shown. Connect Supabase to load live prices and use the online price editor.";
+        return;
+      }
+
+      const addButtons = Array.from(document.querySelectorAll(".add-button"));
+      addButtons.forEach((button) => { button.disabled = true; });
+      priceStatus.hidden = false;
+      priceStatus.textContent = "Loading current prices…";
+
+      if (!window.supabase?.createClient) {
+        priceStatus.textContent = "Could not load the Supabase client. Check your internet connection and reload the page.";
+        return;
+      }
+
+      const client = window.supabase.createClient(config.projectUrl, config.publishableKey);
+      const { data, error } = await client
+        .from("product_prices")
+        .select("product_name, weight, price_inr");
+      if (error) {
+        priceStatus.textContent = `Could not load current prices: ${error.message}. Ordering is disabled until prices can be verified.`;
+        return;
+      }
+
+      const livePrices = {};
+      data.forEach((row) => {
+        if (!Object.prototype.hasOwnProperty.call(PRODUCT_PRICES, row.product_name)
+          || !Object.prototype.hasOwnProperty.call(PRODUCT_PRICES[row.product_name], row.weight)
+          || !Number.isSafeInteger(row.price_inr)
+          || row.price_inr < 0) {
+          return;
+        }
+        livePrices[row.product_name] ??= {};
+        livePrices[row.product_name][row.weight] = row.price_inr;
+      });
+
+      const complete = Object.entries(PRODUCT_PRICES).every(([name, weights]) =>
+        Object.keys(weights).every((weight) => Number.isSafeInteger(livePrices[name]?.[weight])));
+      if (!complete) {
+        priceStatus.textContent = "The price list is incomplete or invalid. Check supabase-setup.sql; ordering is disabled until all prices are available.";
+        return;
+      }
+
+      Object.entries(livePrices).forEach(([name, weights]) => Object.assign(PRODUCT_PRICES[name], weights));
+      document.querySelectorAll(".product-weight").forEach((select) => {
+        select.dispatchEvent(new Event("change"));
+      });
+      addButtons.forEach((button) => { button.disabled = false; });
+      priceStatus.hidden = true;
+      priceStatus.textContent = "";
+    }
+
+    function renderCart() {
+      cartItems.replaceChildren();
+      let itemCount = 0;
+      let subtotal = 0;
+
+      cart.forEach((item, key) => {
+        itemCount += item.quantity;
+        subtotal += item.price * item.quantity;
+
+        const row = document.createElement("div");
+        row.className = "cart-item";
+        const details = document.createElement("div");
+        const title = document.createElement("p");
+        title.className = "cart-item-title";
+        title.textContent = item.name;
+        const description = document.createElement("p");
+        description.className = "cart-item-detail";
+        description.textContent = [item.format, item.grind, item.weight].filter(Boolean).join(" · ");
+        details.append(title, description);
+
+        const price = document.createElement("span");
+        price.className = "cart-item-price";
+        price.textContent = money(item.price * item.quantity);
+
+        const controls = document.createElement("div");
+        controls.className = "cart-item-controls";
+        const quantity = document.createElement("div");
+        quantity.className = "quantity-control";
+
+        const decrease = document.createElement("button");
+        decrease.type = "button";
+        decrease.dataset.action = "decrease";
+        decrease.dataset.key = key;
+        decrease.setAttribute("aria-label", `Remove one ${item.name}`);
+        decrease.textContent = "−";
+        const count = document.createElement("span");
+        count.className = "quantity-value";
+        count.textContent = String(item.quantity);
+        const increase = document.createElement("button");
+        increase.type = "button";
+        increase.dataset.action = "increase";
+        increase.dataset.key = key;
+        increase.setAttribute("aria-label", `Add one ${item.name}`);
+        increase.textContent = "+";
+        quantity.append(decrease, count, increase);
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "remove-item";
+        remove.dataset.action = "remove";
+        remove.dataset.key = key;
+        remove.textContent = "Remove";
+        controls.append(quantity, remove);
+        row.append(details, price, controls);
+        cartItems.append(row);
+      });
+
+      if (cart.size === 0) {
+        const empty = document.createElement("p");
+        empty.className = "cart-empty";
+        empty.textContent = "Your bag is empty. Choose whole beans or coffee powder to get started.";
+        cartItems.append(empty);
+      }
+
+      cartCount.textContent = String(itemCount);
+      cartButton.setAttribute("aria-label", `Shopping bag, ${itemCount} ${itemCount === 1 ? "item" : "items"}`);
+      document.querySelector("#cart-subtotal").textContent = money(subtotal);
+      checkoutForm.hidden = cart.size === 0;
+    }
+
+    cartButton.addEventListener("click", () => cartDialog.showModal());
+    document.querySelector(".cart-close").addEventListener("click", () => cartDialog.close());
+
+    cartDialog.addEventListener("click", (event) => {
+      if (event.target === cartDialog) cartDialog.close();
+    });
+
+    cartItems.addEventListener("click", (event) => {
+      const control = event.target.closest("button[data-action]");
+      if (!control) return;
+
+      const item = cart.get(control.dataset.key);
+      if (!item) return;
+      if (control.dataset.action === "increase") item.quantity += 1;
+      if (control.dataset.action === "decrease") item.quantity -= 1;
+      if (control.dataset.action === "remove" || item.quantity <= 0) {
+        cart.delete(control.dataset.key);
+      }
+      renderCart();
+    });
+
+    document.querySelectorAll(".product").forEach((product) => {
+      const formatSelect = product.querySelector(".product-format");
+      const weightSelect = product.querySelector(".product-weight");
+      const grindLabel = product.querySelector(".product-grind-option");
+      const addButton = product.querySelector(".add-button");
+      const price = product.querySelector(".price");
+
+      function updateProductOptions() {
+        const prices = PRODUCT_PRICES[addButton.dataset.product];
+        if (!prices) throw new Error(`Missing prices for ${addButton.dataset.product}`);
+        Array.from(weightSelect.options).forEach((option) => {
+          const amount = prices[option.value];
+          if (!Number.isFinite(amount) || amount < 0) {
+            throw new Error(`Missing valid price for ${addButton.dataset.product} (${option.value})`);
+          }
+          option.dataset.price = String(amount);
+          option.textContent = `${option.value} — ${money(amount)}`;
+        });
+        const selectedWeight = weightSelect.selectedOptions[0];
+        const amount = Number(selectedWeight.dataset.price);
+        price.textContent = money(amount);
+        addButton.textContent = `Add to bag — ${money(amount)}`;
+        grindLabel.hidden = formatSelect.value === "Whole beans";
+      }
+
+      formatSelect.addEventListener("change", updateProductOptions);
+      weightSelect.addEventListener("change", updateProductOptions);
+      addButton.addEventListener("click", () => {
+        const selectedWeight = weightSelect.selectedOptions[0];
+        const format = formatSelect.value;
+        const grind = format === "Coffee powder" ? product.querySelector(".product-grind").value : "";
+        const item = {
+          name: addButton.dataset.product,
+          format,
+          grind,
+          weight: selectedWeight.value,
+          price: Number(selectedWeight.dataset.price),
+          quantity: 1
+        };
+        const key = JSON.stringify([item.name, item.format, item.grind, item.weight]);
+        const existing = cart.get(key);
+        if (existing) existing.quantity += 1;
+        else cart.set(key, item);
+        renderCart();
+
+        toast.textContent = `${item.name} added to your bag`;
+        toast.classList.add("visible");
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => toast.classList.remove("visible"), 2400);
+      });
+
+      updateProductOptions();
+    });
+
+    checkoutForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      checkoutMessage.textContent = "";
+      if (cart.size === 0) return;
+
+      if (!/^\d{8,15}$/.test(WHATSAPP_NUMBER)) {
+        checkoutMessage.textContent = "Cofree's WhatsApp number is not configured yet. Add the business number, including country code, to WHATSAPP_NUMBER in this page's script.";
+        return;
+      }
+
+      const formData = new FormData(checkoutForm);
+      const orderLines = Array.from(cart.values(), (item) => {
+        const grind = item.grind ? `, ${item.grind}` : "";
+        return `• ${item.quantity} × ${item.name} — ${item.format}${grind}, ${item.weight}: ${money(item.price * item.quantity)}`;
+      });
+      const message = [
+        "Hi Cofree, I'd like to place this order:",
+        "",
+        ...orderLines,
+        "",
+        `Subtotal: ${money(Array.from(cart.values()).reduce((sum, item) => sum + item.price * item.quantity, 0))}`,
+        `Name: ${formData.get("name")}`,
+        `Customer WhatsApp: ${formData.get("phone")}`,
+        `Delivery address: ${formData.get("address")}`
+      ].join("\n");
+      const orderWindow = window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank");
+      if (!orderWindow) {
+        checkoutMessage.textContent = "WhatsApp could not be opened. Allow pop-ups for this page and try again.";
+        return;
+      }
+      orderWindow.opener = null;
+    });
+
+    loadLivePrices();
+
+    document.querySelector(".signup").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const emailInput = document.querySelector("#email");
+      document.querySelector(".signup-message").textContent = `Thanks — we'll be in touch at ${emailInput.value}.`;
+      event.currentTarget.reset();
+    });
+
+    document.querySelector("#year").textContent = String(new Date().getFullYear());
+  </script>
+</body>
+</html>

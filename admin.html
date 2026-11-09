@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#f6f1e8">
+  <title>Cofree price editor</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #292a23;
+      --muted: #69695f;
+      --cream: #f6f1e8;
+      --paper: #fffdf8;
+      --green: #314b38;
+      --line: #e7e1d6;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: "Segoe UI", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 32px 18px;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--sans);
+    }
+    main { width: min(680px, 100%); margin: 36px auto; }
+    .brand { color: var(--green); font-family: var(--serif); font-size: 24px; font-weight: 700; letter-spacing: -.06em; }
+    .eyebrow { margin: 0 0 9px; color: #627447; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    h1 { margin: 0 0 10px; font-family: var(--serif); font-size: clamp(36px, 7vw, 52px); font-weight: 400; letter-spacing: -.05em; }
+    .intro { margin: 0 0 26px; color: var(--muted); font-size: 14px; line-height: 1.65; }
+    .panel { padding: clamp(20px, 5vw, 34px); border: 1px solid var(--line); background: var(--paper); }
+    .form { display: grid; gap: 14px; }
+    label { display: grid; gap: 6px; color: var(--muted); font-size: 12px; }
+    input {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid #d5d0c4;
+      border-radius: 0;
+      background: white;
+      color: var(--ink);
+      font: inherit;
+      font-size: 14px;
+    }
+    button {
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid var(--green);
+      background: var(--green);
+      color: white;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:disabled { cursor: wait; opacity: .65; }
+    .login-button { margin-top: 5px; }
+    .notice { min-height: 20px; margin: 14px 0 0; color: #805234; font-size: 12px; line-height: 1.6; }
+    .notice.success { color: var(--green); }
+    .dashboard[hidden], .login[hidden] { display: none; }
+    .dashboard-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 20px; }
+    .dashboard-heading h2 { margin: 0; font-family: var(--serif); font-size: 28px; font-weight: 400; }
+    .signout { min-height: 36px; padding: 0 12px; border-color: var(--line); background: transparent; color: var(--ink); font-size: 12px; }
+    .price-row { display: grid; grid-template-columns: minmax(0, 1fr) 120px auto; align-items: end; gap: 12px; padding: 16px 0; border-top: 1px solid var(--line); }
+    .product-name { align-self: center; font-family: var(--serif); font-size: 18px; }
+    .price-field { max-width: 120px; }
+    .save-row { min-height: 42px; padding: 0 13px; }
+    .help { margin: 18px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .back-link { display: inline-block; margin-top: 22px; color: var(--green); font-size: 12px; text-decoration: underline; }
+    @media (max-width: 480px) {
+      body { padding: 24px 14px; }
+      main { margin-top: 22px; }
+      .price-row { grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+      .product-name { grid-column: 1 / -1; }
+      .price-field { max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="brand" href="./index.html" aria-label="Cofree home">cofree</a>
+    <p class="eyebrow" style="margin-top: 35px">Store management</p>
+    <h1>Coffee prices</h1>
+    <p class="intro">Sign in to update bag prices. Changes are saved to your Cofree database and appear on the storefront.</p>
+
+    <section class="panel login" aria-labelledby="login-title">
+      <h2 id="login-title" class="eyebrow">Admin sign in</h2>
+      <form class="form" id="login-form">
+        <label>Email
+          <input name="email" type="email" autocomplete="username" required>
+        </label>
+        <label>Password
+          <input name="password" type="password" autocomplete="current-password" required>
+        </label>
+        <button class="login-button" type="submit">Sign in</button>
+      </form>
+      <p class="notice" id="login-message" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="panel dashboard" hidden aria-labelledby="prices-title">
+      <div class="dashboard-heading">
+        <h2 id="prices-title">Bag prices (INR)</h2>
+        <button class="signout" type="button" id="signout-button">Sign out</button>
+      </div>
+      <div id="price-list"></div>
+      <p class="notice" id="save-message" role="status" aria-live="polite"></p>
+      <p class="help">Prices are in whole rupees. Saving updates this bag size immediately; customers see the new price when they next load the storefront.</p>
+    </section>
+    <a class="back-link" href="./index.html">← Back to Cofree storefront</a>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./supabase-config.js"></script>
+  <script>
+    const loginPanel = document.querySelector(".login");
+    const dashboard = document.querySelector(".dashboard");
+    const loginForm = document.querySelector("#login-form");
+    const loginMessage = document.querySelector("#login-message");
+    const saveMessage = document.querySelector("#save-message");
+    const priceList = document.querySelector("#price-list");
+    const loginButton = loginForm.querySelector("button");
+    const config = window.COFREE_SUPABASE_CONFIG;
+    let supabaseClient;
+
+    function showLoginMessage(message) {
+      loginMessage.textContent = message;
+      loginMessage.classList.remove("success");
+    }
+
+    function isConfigured() {
+      return config
+        && /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(config.projectUrl)
+        && typeof config.publishableKey === "string"
+        && config.publishableKey.length > 20
+        && !config.publishableKey.includes("YOUR_");
+    }
+
+    async function loadPriceRows() {
+      saveMessage.textContent = "";
+      const { data, error } = await supabaseClient
+        .from("product_prices")
+        .select("product_name, weight, price_inr")
+        .order("product_name")
+        .order("weight");
+      if (error) {
+        saveMessage.textContent = `Could not load prices: ${error.message}`;
+        return;
+      }
+
+      priceList.replaceChildren();
+      data.forEach((item) => {
+        const row = document.createElement("form");
+        row.className = "price-row";
+        row.dataset.product = item.product_name;
+        row.dataset.weight = item.weight;
+
+        const name = document.createElement("span");
+        name.className = "product-name";
+        name.textContent = `${item.product_name} · ${item.weight}`;
+
+        const label = document.createElement("label");
+        label.className = "price-field";
+        label.textContent = "Price (₹)";
+        const input = document.createElement("input");
+        input.name = "price";
+        input.type = "number";
+        input.min = "0";
+        input.step = "1";
+        input.value = String(item.price_inr);
+        input.required = true;
+        input.setAttribute("aria-label", `${item.product_name} ${item.weight} price in rupees`);
+        label.append(input);
+
+        const save = document.createElement("button");
+        save.className = "save-row";
+        save.type = "submit";
+        save.textContent = "Save";
+        row.append(name, label, save);
+        priceList.append(row);
+      });
+
+      if (data.length === 0) {
+        saveMessage.textContent = "No prices were found. Run supabase-setup.sql in the Supabase SQL Editor.";
+      }
+    }
+
+    async function showDashboard(user) {
+      const { data, error } = await supabaseClient
+        .from("price_admins")
+        .select("user_id")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (error) {
+        showLoginMessage(`Could not verify admin access: ${error.message}`);
+        return;
+      }
+      if (!data) {
+        await supabaseClient.auth.signOut();
+        showLoginMessage("This account is not authorized to edit Cofree prices.");
+        return;
+      }
+      loginPanel.hidden = true;
+      dashboard.hidden = false;
+      await loadPriceRows();
+    }
+
+    if (!isConfigured() || !window.supabase?.createClient) {
+      showLoginMessage("Setup needed: add your Supabase project URL and publishable key to supabase-config.js, then create the database using supabase-setup.sql.");
+      loginButton.disabled = true;
+    } else {
+      supabaseClient = window.supabase.createClient(config.projectUrl, config.publishableKey);
+
+      loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        loginButton.disabled = true;
+        showLoginMessage("");
+        const formData = new FormData(loginForm);
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email: formData.get("email"),
+          password: formData.get("password")
+        });
+        loginButton.disabled = false;
+        if (error) {
+          showLoginMessage(`Sign in failed: ${error.message}`);
+          return;
+        }
+        await showDashboard(data.user);
+      });
+
+      document.querySelector("#signout-button").addEventListener("click", async () => {
+        const { error } = await supabaseClient.auth.signOut();
+        if (error) {
+          saveMessage.textContent = `Could not sign out: ${error.message}`;
+          return;
+        }
+        dashboard.hidden = true;
+        loginPanel.hidden = false;
+        loginForm.reset();
+        showLoginMessage("You have signed out.");
+        loginMessage.classList.add("success");
+      });
+
+      priceList.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const row = event.target.closest(".price-row");
+        if (!row) return;
+        const input = row.querySelector('input[name="price"]');
+        const saveButton = row.querySelector("button");
+        const amount = Number(input.value);
+        if (!Number.isSafeInteger(amount) || amount < 0) {
+          saveMessage.textContent = "Enter a whole-number price of zero or more rupees.";
+          return;
+        }
+
+        saveButton.disabled = true;
+        saveMessage.textContent = "";
+        const { data, error } = await supabaseClient
+          .from("product_prices")
+          .update({ price_inr: amount, updated_at: new Date().toISOString() })
+          .eq("product_name", row.dataset.product)
+          .eq("weight", row.dataset.weight)
+          .select("price_inr")
+          .maybeSingle();
+        saveButton.disabled = false;
+        if (error) {
+          saveMessage.textContent = `Could not save price: ${error.message}`;
+          return;
+        }
+        if (!data) {
+          saveMessage.textContent = "No price was updated. Check that the product row exists and this account has admin access.";
+          return;
+        }
+        input.value = String(data.price_inr);
+        saveMessage.textContent = `Saved ${row.dataset.product}, ${row.dataset.weight} at ₹${data.price_inr}.`;
+        saveMessage.classList.add("success");
+      });
+
+      supabaseClient.auth.getSession().then(({ data, error }) => {
+        if (error) {
+          showLoginMessage(`Could not restore sign-in: ${error.message}`);
+          return;
+        }
+        if (data.session) showDashboard(data.session.user);
+      });
+    }
+  </script>
+</body>
+</html>
